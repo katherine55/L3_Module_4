@@ -8,18 +8,27 @@ public class ThreadedReverseGreeting {
 	// but you should structure your program such that the threads print their
 	// greetings in reverse order.
 	public static void main(String[] args) {
-		ThreadedReverseGreeting gret = new ThreadedReverseGreeting();
-		gret.createThread(50);
+		// ThreadedReverseGreeting gret = new ThreadedReverseGreeting();
+		new Thread(() -> createThread(0)).start();
+
 	}
 
-	void createThread(int x) {
+	static void createThread(int x) {
 
-		System.out.println("Hello from thread " + x + "!");
+		if (x >= 50) {
 
-		for (int i = 0; i < 50; i++) {
-			int n = i;
-			new Thread(() -> createThread(50 - n)).start();
+		} else {
+			int n = 50-x;
+			System.out.println("Hello from Thread " + n + "!");
+			
+			new Thread(() -> createThread(x + 1)).start();
 
+			try {
+				Thread.currentThread().join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
